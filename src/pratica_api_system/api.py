@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 
 from .config import get_settings
 from .indicators import IndicatorValidationError
+from .middleware import request_context_middleware
 from .models import AnalysisResult, AnalyzeRequest, BatchAnalyzeRequest, ProviderState
 from .service import ThreatIntelService
 
@@ -31,6 +32,7 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url=None,
 )
+app.middleware("http")(request_context_middleware)
 
 
 @app.exception_handler(IndicatorValidationError)
