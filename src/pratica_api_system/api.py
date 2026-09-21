@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 
 from .config import get_settings
 from .indicators import IndicatorValidationError
-from .models import AnalyzeRequest, AnalysisResult, BatchAnalyzeRequest, ProviderState
+from .models import AnalysisResult, AnalyzeRequest, BatchAnalyzeRequest, ProviderState
 from .service import ThreatIntelService
 
 settings = get_settings()
