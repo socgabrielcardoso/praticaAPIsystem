@@ -19,6 +19,7 @@ from .models import (
 )
 from .providers.abuseipdb import AbuseIPDBProvider
 from .providers.base import Provider
+from .providers.epss import EPSSProvider
 from .providers.greynoise import GreyNoiseProvider
 from .providers.nvd import NVDProvider
 from .providers.otx import OTXProvider
@@ -66,6 +67,10 @@ class ThreatIntelService:
                 self.client,
                 retry_attempts=settings.retry_attempts,
                 api_key=settings.nvd_api_key,
+            ),
+            EPSSProvider(
+                self.client,
+                retry_attempts=settings.retry_attempts,
             ),
         ]
         self.cache: TTLCache[AnalysisResult] = TTLCache(settings.cache_ttl_seconds)
