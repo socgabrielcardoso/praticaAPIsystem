@@ -35,10 +35,7 @@ class EPSSProvider(Provider):
         percentile = float(record.get("percentile", 0) or 0)
         score = min(100, round(probability * 100))
 
-        if probability >= 0.1:
-            verdict = Verdict.SUSPICIOUS
-        else:
-            verdict = Verdict.UNKNOWN
+        verdict = Verdict.SUSPICIOUS if probability >= 0.1 else Verdict.UNKNOWN
 
         return Finding(
             provider=self.name,
