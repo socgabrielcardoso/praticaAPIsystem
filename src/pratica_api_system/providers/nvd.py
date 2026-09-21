@@ -53,7 +53,7 @@ class NVDProvider(Provider):
         )
 
         if score >= 9.0:
-            verdict = Verdict.MALICIOUS
+            verdict = Verdict.SUSPICIOUS
             risk_score = 90
         elif score >= 7.0:
             verdict = Verdict.SUSPICIOUS
