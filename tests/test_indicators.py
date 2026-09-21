@@ -9,8 +9,16 @@ from pratica_api_system.models import IndicatorType
     [
         ("8.8.8.8", IndicatorType.IP, "8.8.8.8"),
         ("EXAMPLE.COM.", IndicatorType.DOMAIN, "example.com"),
-        ("https://Example.com/a?x=1#frag", IndicatorType.URL, "https://example.com/a?x=1"),
-        ("d41d8cd98f00b204e9800998ecf8427e", IndicatorType.HASH, "d41d8cd98f00b204e9800998ecf8427e"),
+        (
+            "https://Example.com/a?x=1#frag",
+            IndicatorType.URL,
+            "https://example.com/a?x=1",
+        ),
+        (
+            "d41d8cd98f00b204e9800998ecf8427e",
+            IndicatorType.HASH,
+            "d41d8cd98f00b204e9800998ecf8427e",
+        ),
         ("cve-2026-12345", IndicatorType.CVE, "CVE-2026-12345"),
     ],
 )
