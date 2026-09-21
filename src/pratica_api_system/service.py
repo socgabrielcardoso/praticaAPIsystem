@@ -21,6 +21,7 @@ from .providers.abuseipdb import AbuseIPDBProvider
 from .providers.base import Provider
 from .providers.greynoise import GreyNoiseProvider
 from .providers.nvd import NVDProvider
+from .providers.otx import OTXProvider
 from .providers.urlhaus import URLhausProvider
 from .providers.virustotal import VirusTotalProvider
 from .scoring import aggregate_score
@@ -55,6 +56,11 @@ class ThreatIntelService:
                 self.client,
                 retry_attempts=settings.retry_attempts,
                 api_key=settings.greynoise_api_key,
+            ),
+            OTXProvider(
+                self.client,
+                retry_attempts=settings.retry_attempts,
+                api_key=settings.otx_api_key,
             ),
             NVDProvider(
                 self.client,
