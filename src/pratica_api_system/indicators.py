@@ -4,6 +4,7 @@ import ipaddress
 import re
 from urllib.parse import SplitResult, urlsplit, urlunsplit
 
+from .defang import refang
 from .models import Indicator, IndicatorType
 
 _CVE_RE = re.compile(r"^CVE-\d{4}-\d{4,7}$", re.IGNORECASE)
@@ -71,7 +72,7 @@ def _normalize_url(value: str) -> tuple[str, bool]:
 
 
 def parse_indicator(raw: str) -> Indicator:
-    value = raw.strip()
+    value = refang(raw)
     if not value:
         raise IndicatorValidationError("indicator cannot be empty")
     if len(value) > 2048:
