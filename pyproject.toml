@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pratica-api-system"
+version = "1.0.0"
+description = "Blue team IOC enrichment gateway that correlates threat intelligence APIs into one defensive verdict."
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Gabriel Cardoso" }]
+dependencies = [
+  "fastapi>=0.116,<1.0",
+  "httpx>=0.28,<1.0",
+  "pydantic>=2.11,<3.0",
+  "pydantic-settings>=2.10,<3.0",
+  "rich>=14,<15",
+  "typer>=0.16,<1.0",
+  "uvicorn[standard]>=0.35,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<9.0",
+  "pytest-asyncio>=1.1,<2.0",
+  "ruff>=0.12,<1.0",
+]
+
+[project.scripts]
+pratica-api = "pratica_api_system.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pratica_api_system"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ASYNC"]
+ignore = ["B008"]
