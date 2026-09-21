@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     virustotal_api_key: SecretStr | None = None
     abuseipdb_api_key: SecretStr | None = None
     urlhaus_auth_key: SecretStr | None = None
+    greynoise_api_key: SecretStr | None = None
+    otx_api_key: SecretStr | None = None
     nvd_api_key: SecretStr | None = None
 
     request_timeout_seconds: float = Field(default=12.0, ge=2.0, le=60.0)
