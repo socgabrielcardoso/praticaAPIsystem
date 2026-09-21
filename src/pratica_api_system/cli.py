@@ -86,7 +86,8 @@ async def _render_providers() -> None:
 def _render_result(result: AnalysisResult) -> None:
     header = (
         f"[bold]{result.indicator.normalized}[/bold]\n"
-        f"type={result.indicator.type.value}  verdict={result.verdict.value}  score={result.score}/100"
+        f"type={result.indicator.type.value}  "
+        f"verdict={result.verdict.value}  score={result.score}/100"
     )
     console.print(Panel(header, title="praticaAPIsystem", border_style="cyan"))
 
