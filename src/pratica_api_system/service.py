@@ -19,6 +19,7 @@ from .models import (
 )
 from .providers.abuseipdb import AbuseIPDBProvider
 from .providers.base import Provider
+from .providers.greynoise import GreyNoiseProvider
 from .providers.nvd import NVDProvider
 from .providers.urlhaus import URLhausProvider
 from .providers.virustotal import VirusTotalProvider
@@ -49,6 +50,11 @@ class ThreatIntelService:
                 self.client,
                 retry_attempts=settings.retry_attempts,
                 auth_key=settings.urlhaus_auth_key,
+            ),
+            GreyNoiseProvider(
+                self.client,
+                retry_attempts=settings.retry_attempts,
+                api_key=settings.greynoise_api_key,
             ),
             NVDProvider(
                 self.client,
