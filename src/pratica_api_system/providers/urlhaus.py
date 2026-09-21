@@ -47,7 +47,10 @@ class URLhausProvider(Provider):
                 verdict=Verdict.UNKNOWN,
                 score=0,
                 confidence=65,
-                summary="URLhaus has no matching record. Absence of a record is not a benign verdict.",
+                summary=(
+                    "URLhaus has no matching record. "
+                    "Absence of a record is not a benign verdict."
+                ),
             )
         if status != "ok":
             return Finding(
