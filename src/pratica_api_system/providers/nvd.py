@@ -75,12 +75,16 @@ class NVDProvider(Provider):
             "description": description,
             "weaknesses": cve.get("weaknesses"),
         }
+        summary = (
+            f"NVD rates {indicator.normalized} at CVSS "
+            f"{score or 'N/A'} {severity or ''}."
+        ).strip()
         return Finding(
             provider=self.name,
             verdict=verdict,
             score=risk_score,
             confidence=90,
-            summary=f"NVD rates {indicator.normalized} at CVSS {score or 'N/A'} {severity or ''}.".strip(),
+            summary=summary,
             evidence=evidence,
             reference=f"https://nvd.nist.gov/vuln/detail/{indicator.normalized}",
         )
@@ -91,7 +95,10 @@ class NVDProvider(Provider):
             entries = metrics.get(key) or []
             if not entries:
                 continue
-            primary = next((entry for entry in entries if entry.get("type") == "Primary"), entries[0])
+            primary = next(
+                (entry for entry in entries if entry.get("type") == "Primary"),
+                entries[0],
+            )
             data = primary.get("cvssData", {})
             score = float(data.get("baseScore", 0) or 0)
             severity = data.get("baseSeverity") or primary.get("baseSeverity")
