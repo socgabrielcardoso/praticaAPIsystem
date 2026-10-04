@@ -1,17 +1,22 @@
-# Project Profile
+# Pratica API System — notas do projeto
 
-**Pratica API System** is a Blue Team/API-security laboratory built to practice defensive analysis, validation and secure API behavior in controlled scenarios.
+## Finalidade
 
-## What this project demonstrates
-- API security reasoning
-- Defensive validation and structured testing
-- Python project organization
-- Container-ready execution
-- Security documentation and automated checks
+Centralizar enriquecimento de indicadores de comprometimento usados em análise defensiva.
 
-## Portfolio signal
-The repository demonstrates how API behavior can be analyzed from a defender's perspective, with emphasis on predictable validation, reproducible tests and safe experimentation.
+A aplicação recebe um IOC, consulta as fontes configuradas, normaliza os retornos e monta uma resposta única para facilitar a triagem.
 
-**Domain:** API Security, Blue Team, AppSec  
-**Stack:** Python, Docker, Pytest  
-**Status:** Active technical laboratory
+## Componentes
+
+- API com FastAPI;
+- cliente HTTP assíncrono;
+- validação com Pydantic;
+- CLI com Typer;
+- saída de terminal com Rich;
+- testes com Pytest;
+- lint com Ruff;
+- execução via Docker.
+
+## Cuidados
+
+Chaves de serviços externos ficam fora do código. Erros de integração precisam ser tratados sem expor segredo e sem transformar indisponibilidade de uma fonte em um veredito incorreto.
