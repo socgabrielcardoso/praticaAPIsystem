@@ -1,11 +1,12 @@
-# Remediation Verification
+# Reteste de correção
 
-After a security fix:
-1. rerun the original failing test;
-2. validate expected rejection;
-3. confirm legitimate flow still passes;
-4. test a nearby variant;
-5. review security log;
-6. keep the case as regression coverage.
+Depois de corrigir um problema:
 
-A fix is complete only when behavior is verified.
+1. repetir exatamente o caso que falhava;
+2. confirmar o novo comportamento;
+3. testar o fluxo legítimo;
+4. testar uma variação próxima;
+5. revisar logs e erros;
+6. manter o caso como teste de regressão quando fizer sentido.
+
+Se a correção quebra o fluxo válido ou só bloqueia um payload específico, o problema ainda não foi resolvido direito.
