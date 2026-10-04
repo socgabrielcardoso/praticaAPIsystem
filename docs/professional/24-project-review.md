@@ -1,13 +1,14 @@
-# Project Review
+# Revisão antes de publicar
 
-Before publishing:
-- tests pass;
-- no real secrets;
-- environment examples are synthetic;
-- authorization negative tests exist;
-- validation is documented;
-- Docker behavior is reproducible;
-- errors are safe;
-- dependencies reviewed;
-- examples target only local/authorized systems;
-- README matches current behavior.
+- rodar testes;
+- rodar lint;
+- conferir se não entrou chave de API;
+- revisar `.env.example`;
+- testar falhas de integração;
+- conferir autorização e validação;
+- validar execução em Docker quando houver mudança de ambiente;
+- revisar dependências alteradas;
+- manter exemplos restritos a laboratório;
+- atualizar README quando comando ou comportamento mudar.
+
+O projeto deve continuar reproduzível sem depender de segredo versionado.
