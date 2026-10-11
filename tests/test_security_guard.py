@@ -1,7 +1,7 @@
 """Offline sanity tests for the credential scan used by CI."""
 import importlib.util
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 spec = importlib.util.spec_from_file_location(
     "credential_scan", Path(__file__).resolve().parents[1] / "scripts" / "security_guard.py"
