@@ -3,18 +3,19 @@ from __future__ import annotations
 import re
 
 _DOT_TOKENS = ("[.]", "(.)")
-_HTTP_REPLACEMENTS = (
-    ("hxxps://", "https://"),
-    ("hxxp://", "http://"),
-    ("HXXPS://", "https://"),
-    ("HXXP://", "http://"),
-)
+_DEFANGED_SCHEME = re.compile(r"^hxxps?://", re.IGNORECASE)
+_ACTIVE_SCHEME = re.compile(r"^https?://", re.IGNORECASE)
 
 
 def refang(value: str) -> str:
     result = value.strip()
-    for source, target in _HTTP_REPLACEMENTS:
-        result = result.replace(source, target)
+    # Only restore a leading URL scheme. Embedded strings in paths and queries
+    # are data and must not be silently rewritten.
+    result = _DEFANGED_SCHEME.sub(
+        lambda match: "https://" if match.group().lower().startswith("hxxps") else "http://",
+        result,
+        count=1,
+    )
     for token in _DOT_TOKENS:
         result = result.replace(token, ".")
     result = re.sub(r"\[:\]", ":", result)
@@ -23,8 +24,10 @@ def refang(value: str) -> str:
 
 def defang(value: str) -> str:
     result = value.strip()
-    if result.startswith("https://"):
-        result = "hxxps://" + result[len("https://") :]
-    elif result.startswith("http://"):
-        result = "hxxp://" + result[len("http://") :]
+    # URL schemes are case-insensitive; never leave an uppercase active scheme.
+    result = _ACTIVE_SCHEME.sub(
+        lambda match: "hxxps://" if match.group().lower().startswith("https") else "hxxp://",
+        result,
+        count=1,
+    )
     return result.replace(".", "[.]")
