@@ -41,3 +41,16 @@ def test_url_with_credentials_is_rejected():
 def test_invalid_indicator_is_rejected():
     with pytest.raises(IndicatorValidationError):
         parse_indicator("not an indicator")
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        "https://[bad",
+        "https://example.com:99999/path",
+        "https://example.com:abc/path",
+    ],
+)
+def test_malformed_url_authority_is_a_validation_error(raw):
+    with pytest.raises(IndicatorValidationError, match="invalid URL authority or port"):
+        parse_indicator(raw)
