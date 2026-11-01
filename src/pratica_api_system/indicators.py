@@ -36,15 +36,23 @@ def _ip_is_public(value: str) -> bool:
 
 
 def _normalize_url(value: str) -> tuple[str, bool]:
-    parsed = urlsplit(value)
+    try:
+        parsed = urlsplit(value)
+        host = parsed.hostname
+        port = parsed.port
+        username = parsed.username
+        password = parsed.password
+    except ValueError as exc:
+        # urllib raises ValueError for malformed IPv6 brackets and ports.
+        # Convert it to the public validation error instead of a server 500.
+        raise IndicatorValidationError("invalid URL authority or port") from exc
     if parsed.scheme.lower() not in {"http", "https"}:
         raise IndicatorValidationError("URL scheme must be http or https")
-    if not parsed.hostname:
+    if not host:
         raise IndicatorValidationError("URL must include a hostname")
-    if parsed.username or parsed.password:
+    if username or password:
         raise IndicatorValidationError("URLs with embedded credentials are not accepted")
 
-    host = parsed.hostname
     public_routable = True
     try:
         ip = ipaddress.ip_address(host)
@@ -56,8 +64,8 @@ def _normalize_url(value: str) -> tuple[str, bool]:
     netloc = normalized_host
     if ":" in normalized_host and not normalized_host.startswith("["):
         netloc = f"[{normalized_host}]"
-    if parsed.port is not None:
-        netloc = f"{netloc}:{parsed.port}"
+    if port is not None:
+        netloc = f"{netloc}:{port}"
 
     normalized = urlunsplit(
         SplitResult(

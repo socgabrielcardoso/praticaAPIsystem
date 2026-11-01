@@ -36,3 +36,11 @@ def test_provider_inventory_is_available():
     names = {item["name"] for item in response.json()}
     assert {"VirusTotal", "AbuseIPDB", "URLhaus", "GreyNoise", "AlienVault OTX"} <= names
     assert {"NVD", "FIRST EPSS"} <= names
+
+
+def test_malformed_url_returns_422_instead_of_server_error():
+    with TestClient(app) as client:
+        response = client.post("/v1/analyze", json={"indicator": "https://[bad"})
+
+    assert response.status_code == 422
+    assert "invalid URL" in response.json()["detail"]
