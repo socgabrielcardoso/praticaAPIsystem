@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-_DOT_TOKENS = ("[.]", "(.)")
+_DOT_TOKENS = ("[.]", "(.)", "{.}")
 _HTTP_REPLACEMENTS = (
     ("hxxps://", "https://"),
     ("hxxp://", "http://"),
