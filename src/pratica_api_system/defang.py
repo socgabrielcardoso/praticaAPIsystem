@@ -23,8 +23,8 @@ def refang(value: str) -> str:
 
 def defang(value: str) -> str:
     result = value.strip()
-    if result.startswith("https://"):
-        result = "hxxps://" + result[len("https://") :]
-    elif result.startswith("http://"):
-        result = "hxxp://" + result[len("http://") :]
+    if result[:8].lower() == "https://":
+        result = "hxxps://" + result[8:]
+    elif result[:7].lower() == "http://":
+        result = "hxxp://" + result[7:]
     return result.replace(".", "[.]")
