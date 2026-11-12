@@ -15,3 +15,8 @@ def test_brace_delimited_dot_is_refanged():
 def test_uppercase_http_scheme_is_defanged():
     assert defang("HTTPS://example.org") == "hxxps://example[.]org"
 
+
+def test_empty_url_username_is_rejected():
+    with pytest.raises(IndicatorValidationError):
+        parse_indicator("https://@example.org/")
+
