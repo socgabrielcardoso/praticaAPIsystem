@@ -30,3 +30,8 @@ def test_fake_numeric_ipv4_is_not_accepted_as_domain():
     with pytest.raises(IndicatorValidationError):
         parse_indicator("999.999.999.999")
 
+
+def test_empty_url_port_is_rejected():
+    with pytest.raises(IndicatorValidationError):
+        parse_indicator("https://example.org:/a")
+
