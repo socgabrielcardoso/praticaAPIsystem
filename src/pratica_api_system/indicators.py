@@ -41,7 +41,7 @@ def _normalize_url(value: str) -> tuple[str, bool]:
         raise IndicatorValidationError("URL scheme must be http or https")
     if not parsed.hostname:
         raise IndicatorValidationError("URL must include a hostname")
-    if parsed.username or parsed.password:
+    if parsed.username is not None or parsed.password is not None:
         raise IndicatorValidationError("URLs with embedded credentials are not accepted")
 
     host = parsed.hostname
