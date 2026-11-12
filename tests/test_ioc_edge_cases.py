@@ -35,3 +35,8 @@ def test_empty_url_port_is_rejected():
     with pytest.raises(IndicatorValidationError):
         parse_indicator("https://example.org:/a")
 
+
+def test_embedded_null_byte_is_rejected():
+    with pytest.raises(IndicatorValidationError):
+        parse_indicator("example.org\x00")
+
