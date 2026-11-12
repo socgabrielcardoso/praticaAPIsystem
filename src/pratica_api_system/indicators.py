@@ -84,6 +84,8 @@ def parse_indicator(raw: str) -> Indicator:
     value = refang(raw)
     if not value:
         raise IndicatorValidationError("indicator cannot be empty")
+    if "\x00" in value:
+        raise IndicatorValidationError("indicator contains a null byte")
     if len(value) > 2048:
         raise IndicatorValidationError("indicator is too long")
 
