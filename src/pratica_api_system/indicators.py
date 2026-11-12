@@ -25,7 +25,10 @@ def _normalize_domain(value: str) -> str:
 
     if len(ascii_domain) > 253 or "." not in ascii_domain:
         raise IndicatorValidationError("invalid domain name")
-    if any(not _DOMAIN_LABEL_RE.fullmatch(label) for label in ascii_domain.split(".")):
+    labels = ascii_domain.split(".")
+    if len(labels) == 4 and all(label.isdigit() for label in labels):
+        raise IndicatorValidationError("invalid IPv4 address")
+    if any(not _DOMAIN_LABEL_RE.fullmatch(label) for label in labels):
         raise IndicatorValidationError("invalid domain name")
     return ascii_domain
 
