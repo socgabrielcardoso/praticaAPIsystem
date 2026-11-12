@@ -13,8 +13,8 @@ _HTTP_REPLACEMENTS = (
 
 def refang(value: str) -> str:
     result = value.strip()
-    for source, target in _HTTP_REPLACEMENTS:
-        result = result.replace(source, target)
+    result = re.sub(r"^hxxps://", "https://", result, flags=re.IGNORECASE)
+    result = re.sub(r"^hxxp://", "http://", result, flags=re.IGNORECASE)
     for token in _DOT_TOKENS:
         result = result.replace(token, ".")
     result = re.sub(r"\[:\]", ":", result)
