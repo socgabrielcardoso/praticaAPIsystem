@@ -20,3 +20,8 @@ def test_empty_url_username_is_rejected():
     with pytest.raises(IndicatorValidationError):
         parse_indicator("https://@example.org/")
 
+
+def test_out_of_range_url_port_is_rejected():
+    with pytest.raises(IndicatorValidationError):
+        parse_indicator("https://example.org:99999/a")
+
