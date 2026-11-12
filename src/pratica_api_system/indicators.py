@@ -46,6 +46,8 @@ def _normalize_url(value: str) -> tuple[str, bool]:
         raise IndicatorValidationError("URL must include a hostname")
     if parsed.username is not None or parsed.password is not None:
         raise IndicatorValidationError("URLs with embedded credentials are not accepted")
+    if parsed.netloc.endswith(":"):
+        raise IndicatorValidationError("URL must not have an empty port")
 
     host = parsed.hostname
     public_routable = True
