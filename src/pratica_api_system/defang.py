@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-_DOT_TOKENS = ("[.]", "(.)")
+_DOT_TOKENS = ("[.]", "(.)", "{.}")
 _HTTP_REPLACEMENTS = (
     ("hxxps://", "https://"),
     ("hxxp://", "http://"),
@@ -13,8 +13,8 @@ _HTTP_REPLACEMENTS = (
 
 def refang(value: str) -> str:
     result = value.strip()
-    for source, target in _HTTP_REPLACEMENTS:
-        result = result.replace(source, target)
+    result = re.sub(r"^hxxps://", "https://", result, flags=re.IGNORECASE)
+    result = re.sub(r"^hxxp://", "http://", result, flags=re.IGNORECASE)
     for token in _DOT_TOKENS:
         result = result.replace(token, ".")
     result = re.sub(r"\[:\]", ":", result)
@@ -23,8 +23,8 @@ def refang(value: str) -> str:
 
 def defang(value: str) -> str:
     result = value.strip()
-    if result.startswith("https://"):
-        result = "hxxps://" + result[len("https://") :]
-    elif result.startswith("http://"):
-        result = "hxxp://" + result[len("http://") :]
+    if result[:8].lower() == "https://":
+        result = "hxxps://" + result[8:]
+    elif result[:7].lower() == "http://":
+        result = "hxxp://" + result[7:]
     return result.replace(".", "[.]")

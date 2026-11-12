@@ -25,7 +25,10 @@ def _normalize_domain(value: str) -> str:
 
     if len(ascii_domain) > 253 or "." not in ascii_domain:
         raise IndicatorValidationError("invalid domain name")
-    if any(not _DOMAIN_LABEL_RE.fullmatch(label) for label in ascii_domain.split(".")):
+    labels = ascii_domain.split(".")
+    if len(labels) == 4 and all(label.isdigit() for label in labels):
+        raise IndicatorValidationError("invalid IPv4 address")
+    if any(not _DOMAIN_LABEL_RE.fullmatch(label) for label in labels):
         raise IndicatorValidationError("invalid domain name")
     return ascii_domain
 
@@ -41,8 +44,10 @@ def _normalize_url(value: str) -> tuple[str, bool]:
         raise IndicatorValidationError("URL scheme must be http or https")
     if not parsed.hostname:
         raise IndicatorValidationError("URL must include a hostname")
-    if parsed.username or parsed.password:
+    if parsed.username is not None or parsed.password is not None:
         raise IndicatorValidationError("URLs with embedded credentials are not accepted")
+    if parsed.netloc.endswith(":"):
+        raise IndicatorValidationError("URL must not have an empty port")
 
     host = parsed.hostname
     public_routable = True
@@ -56,8 +61,12 @@ def _normalize_url(value: str) -> tuple[str, bool]:
     netloc = normalized_host
     if ":" in normalized_host and not normalized_host.startswith("["):
         netloc = f"[{normalized_host}]"
-    if parsed.port is not None:
-        netloc = f"{netloc}:{parsed.port}"
+    try:
+        port = parsed.port
+    except ValueError as exc:
+        raise IndicatorValidationError("URL port is invalid") from exc
+    if port is not None:
+        netloc = f"{netloc}:{port}"
 
     normalized = urlunsplit(
         SplitResult(
@@ -75,6 +84,8 @@ def parse_indicator(raw: str) -> Indicator:
     value = refang(raw)
     if not value:
         raise IndicatorValidationError("indicator cannot be empty")
+    if "\x00" in value:
+        raise IndicatorValidationError("indicator contains a null byte")
     if len(value) > 2048:
         raise IndicatorValidationError("indicator is too long")
 
