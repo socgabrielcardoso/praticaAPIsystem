@@ -56,8 +56,12 @@ def _normalize_url(value: str) -> tuple[str, bool]:
     netloc = normalized_host
     if ":" in normalized_host and not normalized_host.startswith("["):
         netloc = f"[{normalized_host}]"
-    if parsed.port is not None:
-        netloc = f"{netloc}:{parsed.port}"
+    try:
+        port = parsed.port
+    except ValueError as exc:
+        raise IndicatorValidationError("URL port is invalid") from exc
+    if port is not None:
+        netloc = f"{netloc}:{port}"
 
     normalized = urlunsplit(
         SplitResult(
