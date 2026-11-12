@@ -11,3 +11,7 @@ def test_mixed_case_hxxps_scheme_is_refanged():
 def test_brace_delimited_dot_is_refanged():
     assert refang("example{.}org") == "example.org"
 
+
+def test_uppercase_http_scheme_is_defanged():
+    assert defang("HTTPS://example.org") == "hxxps://example[.]org"
+
